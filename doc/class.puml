@@ -8,7 +8,9 @@ class "Window" as w {
     - menu: tkMenu
     - frame: tkFrame
     - time: tkLabel
+    - timevar: tkStringVar
     - date: tkLabel
+    - datevar: tkStringVar
     + get_time_var() -> tkStringVar
     + get_date_var() -> tkStringVar
     + run()

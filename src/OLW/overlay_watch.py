@@ -3,6 +3,12 @@ from datetime import datetime as dt
 from tkinter import font as tkfont
 from tkinter import ttk
 
+from window import WindowFactory
+
+window = WindowFactory.create()
+window.run()
+exit()
+
 topmost: bool = False
 
 
@@ -24,7 +30,8 @@ def fuga():
     global now_time
     global now_date
     now = dt.now()
-    now_time.set(now.strftime('%H:%M:%S'))
+    hoge = time_label['textvariable']
+    hoge.set(now.strftime('%H:%M:%S'))
     now_date.set(now.strftime('%Y/%m/%d %a'))
     menu.entryconfigure(0, label='fuga')
 
@@ -46,6 +53,7 @@ now_date = tk.StringVar(frame)
 now_date.set(now.strftime('%Y/%m/%d %a'))
 
 time_label = ttk.Label(frame, textvariable=now_time, anchor='center', font=font_time)
+print(id(time_label['textvariable']), id(now_time))
 date_label = ttk.Label(frame, textvariable=now_date, anchor='center', font=font_date)
 time_label.pack(fill=tk.BOTH, expand=True, pady=(5, 0), padx=10)
 date_label.pack(fill=tk.BOTH, expand=True, pady=(0, 5), padx=10)

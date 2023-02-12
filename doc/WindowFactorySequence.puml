@@ -39,7 +39,7 @@ f -> dvar**: Create()
 f -> dlabel**: Create(frame, tvar, tfont)
 f -> dlabel: pack(fill=BOTH, ...)
 deactivate
-f -> w**: Create(root, menu, frame, tlabel, dlabel)
+f -> w**: Create(root, menu, frame, tvar, tlabel, dvar, dlabel)
 return window
 [-> ef: create(window)
 deactivate
