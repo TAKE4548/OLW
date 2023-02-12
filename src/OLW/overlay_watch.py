@@ -1,4 +1,6 @@
 import tkinter as tk
+from datetime import datetime as dt
+from tkinter import font as tkfont
 from tkinter import ttk
 
 topmost: bool = False
@@ -10,30 +12,28 @@ def execute():
     root.attributes('-topmost', topmost)
 
 
-def display():
-    app = tk.Tk()
-    app.title("hoge")
-    app.geometry("300x100")
-
-    frame_app = ttk.Frame(app)
-    frame_app.pack(fill=tk.BOTH, pady=10)
-
-    button_execute = ttk.Button(frame_app, text='fuga', command=execute)
-
-    button_execute.pack()
-
-    app.mainloop()
-
-
 root = tk.Tk()
 root.title('tkinter application')
 root.geometry('300x100')
 
+font_time = tkfont.Font(family="M+ 1mn", size=34, weight='bold')
+font_date = tkfont.Font(family="M+ 1mn", size=12)
+
 frame = ttk.Frame(root)
-frame.pack(fill=tk.BOTH, pady=10)
+frame.pack(fill=tk.BOTH)
 
-button_display = ttk.Button(frame, text='Window作成', command=display)
+# button_display = ttk.Button(frame, text='Window作成', command=display)
+now = dt.now()
+now_time = tk.StringVar(frame)
+now_time.set(now.strftime('%H:%M:%S'))
+now_date = tk.StringVar(frame)
+now_date.set(now.strftime('%Y/%m/%d %a'))
 
-button_display.pack()
+time_label = ttk.Label(frame, textvariable=now_time, anchor='center', font=font_time)
+date_label = ttk.Label(frame, textvariable=now_date, anchor='center', font=font_date)
+time_label.pack(fill=tk.BOTH, expand=True, pady=(5, 0), padx=10)
+date_label.pack(fill=tk.BOTH, expand=True, pady=(0, 5), padx=10)
+
+# button_display.pack()
 
 root.mainloop()
