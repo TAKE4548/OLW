@@ -64,6 +64,7 @@ class Window:
         return self.__datevar
 
     def run(self):
+        """ウィンドウを表示する"""
         self.__root.mainloop()
 
     def close_window(self):
