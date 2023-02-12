@@ -8,10 +8,15 @@ class "Window" as w {
     - menu: tkMenu
     - frame: tkFrame
     - time: tkLabel
+    - timevar: tkStringVar
     - date: tkLabel
+    - datevar: tkStringVar
+    - quit_funcs: list[Function]
     + get_time_var() -> tkStringVar
     + get_date_var() -> tkStringVar
     + run()
+    + close_window()
+    + register_quit_func(Function)
 }
 class "WindowFactory" as wf {
     create() -> Window
@@ -67,6 +72,7 @@ ec <|.. tmse
 
 abstract class "WatchObserver" as wo {
     - target: tkStringVar
+    - last_time: datetime
     + update(datetime)
 }
 ee <|---- wo
@@ -81,13 +87,13 @@ wo <|.. to
 wo <|.. do
 
 abstract class "WatchCounter" as wc {
-    - observers: list[tkVariable]
-    + add_observer(tkVariable)
+    - observers: list[WatchObsever]
+    + add_observer(WatchObserver)
     # notify_observer(datetime)
-    # abstract count()
+    # {abstract} count()
+    + quit()
 }
 class "TimeCounter" as tc {
-    - observed_time: datetime
     - count()
 }
 wc <|.. tc

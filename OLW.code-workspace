@@ -21,10 +21,20 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         },
+        "cSpell.userWords": [
+            "timevar",
+            "datevar",
+            "tkfont"
+        ],
         "cSpell.ignoreWords": [
             "venv",
             "yapf",
-            "puml"
+            "puml",
+            "tearoff",
+            "textvariable",
+            "pady",
+            "padx",
+            "funcs"
         ],
         "python.analysis.diagnosticMode": "workspace",
         "python.analysis.typeCheckingMode": "basic",
