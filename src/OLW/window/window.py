@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from typing import Callable
 
 
 class Window:
@@ -32,6 +33,7 @@ class Window:
         self.__timevar = timevar
         self.__date = date
         self.__datevar = datevar
+        self.__quit_funcs: list[Callable] = []
 
     @property
     def root(self) -> tk.Tk:
@@ -63,3 +65,17 @@ class Window:
 
     def run(self):
         self.__root.mainloop()
+
+    def close_window(self):
+        """ウィンドウを閉じる時のハンドラ"""
+        for func in self.__quit_funcs:
+            func()
+        self.root.destroy()
+
+    def register_quit_procedure(self, func: Callable):
+        """ウィンドウ閉じる前の終了処理関数を登録する
+
+        Args:
+            func (Callable): 終了処理関数
+        """
+        self.__quit_funcs.append(func)

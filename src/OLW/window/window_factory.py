@@ -26,4 +26,6 @@ class WindowFactory:
         d_var = tk.StringVar(frame)
         date = ttk.Label(frame, textvariable=d_var, font=d_font)
         date.pack(fill=tk.BOTH, expand=True, pady=(0, 5), padx=10)
-        return Window(root, menu, frame, time, t_var, date, d_var)
+        window = Window(root, menu, frame, time, t_var, date, d_var)
+        root.protocol("WM_DELETE_WINDOW", window.close_window)
+        return window

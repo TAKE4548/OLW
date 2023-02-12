@@ -33,7 +33,8 @@
             "tearoff",
             "textvariable",
             "pady",
-            "padx"
+            "padx",
+            "funcs"
         ],
         "python.analysis.diagnosticMode": "workspace",
         "python.analysis.typeCheckingMode": "basic",

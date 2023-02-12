@@ -26,6 +26,10 @@ ef -> tc: add_observer(time_observer)
 deactivate
 ef -> tc: add_observer(date_observer)
 deactivate
+ef -> tc: get_quit_func()
+return quit_func
+ef -> w: resister_quit_func(quit_func)
+deactivate
 ==コンテキストメニューイベント==
 ef -> w: get_root()
 return root

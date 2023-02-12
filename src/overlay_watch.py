@@ -3,9 +3,10 @@ from datetime import datetime as dt
 from tkinter import font as tkfont
 from tkinter import ttk
 
-from window import WindowFactory
+from OLW import EventFactory, WindowFactory
 
 window = WindowFactory.create()
+EventFactory.create(window)
 window.run()
 exit()
 
