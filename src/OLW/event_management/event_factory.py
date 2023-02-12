@@ -1,5 +1,5 @@
 from ..window import Window
-from .event_executer import TimeCounter, TimeObserver
+from .event_executer import DateObserver, TimeCounter, TimeObserver
 
 
 class EventFactory:
@@ -7,7 +7,9 @@ class EventFactory:
 
     @staticmethod
     def create(window: Window):
-        observer = TimeObserver(window.timevar)
         counter = TimeCounter()
-        counter.add_observer(observer)
         window.register_quit_procedure(counter.quit)
+        observer = TimeObserver(window.timevar)
+        counter.add_observer(observer)
+        observer = DateObserver(window.datevar)
+        counter.add_observer(observer)
