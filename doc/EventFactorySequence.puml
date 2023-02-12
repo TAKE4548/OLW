@@ -1,0 +1,38 @@
+@startuml EventFactoryの流れ
+skinparam {
+   defaultfontsize 16
+   linetype ortho
+}
+autoactivate on
+participant EventFactory as ef
+participant Window as w
+participant TimeObserver as to
+participant DateObserver as do
+participant TimeCounter as tc
+participant TitleVisibilitySwitcher as tvs
+participant TitleVisibilitySwitchEvent as tvse
+participant TopmostSwitcher as tms
+
+[-> ef: create(window)
+==時刻更新イベント==
+ef -> w: get_time_var()
+return textvar_of_time
+ef -> to**: Create(textvar_of_time)
+ef -> w: get_date_var()
+return textvar_of_date
+ef -> do**: Create(textvar_of_date)
+ef -> tc**: Create()
+ef -> tc: add_observer(time_observer)
+deactivate
+ef -> tc: add_observer(date_observer)
+deactivate
+==コンテキストメニューイベント==
+ef -> w: get_root()
+return root
+ef -> w: get_menu()
+return menu
+ef -> tvs**: Create(root)
+ef -> tvse**: Create(menu, tvs)
+ef -> tms**: Create(root)
+ef -> tmse**: Create(menu, tvs)
+@enduml
