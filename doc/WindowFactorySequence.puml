@@ -1,0 +1,47 @@
+@startuml WindowFactoryと全体の流れ
+skinparam {
+   defaultfontsize 16
+   linetype ortho
+}
+participant WindowFactory as f
+participant Window as w
+participant Root as root
+participant Menu as menu
+participant Frame as frame
+participant "Time:Label" as tlabel
+participant "Time:TimeObserver" as tvar
+participant "Time:Font" as tfont
+participant "Date:Label" as dlabel
+participant "Date:DateObserver" as dvar
+participant "Date:Font" as dfont
+participant EventFactory as ef
+
+autoactivate on
+[-> f: create(...)
+f -> root**: Create()
+f -> root: set_title
+deactivate
+f -> root: set_geometory
+deactivate
+f -> menu**: Create(root)
+f -> root: bind(右クリック, menu...)
+deactivate
+f -> frame**: Create(root)
+f -> frame: pack(fill=BOTH)
+deactivate
+f -> tfont**: Create()
+f -> tvar**: Create()
+f -> tlabel**: Create(frame, tvar, tfont)
+f -> tlabel: pack(fill=BOTH, ...)
+deactivate
+f -> dfont**: Create()
+f -> dvar**: Create()
+f -> dlabel**: Create(frame, tvar, tfont)
+f -> dlabel: pack(fill=BOTH, ...)
+deactivate
+f -> w**: Create(root, menu, frame, tlabel, dlabel)
+return window
+[-> ef: create(window)
+deactivate
+[-> w: run()
+@enduml

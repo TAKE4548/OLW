@@ -1,0 +1,95 @@
+@startuml Class
+skinparam {
+   defaultfontsize 16
+   linetype ortho
+}
+class "Window" as w {
+    - root: tkRoot
+    - menu: tkMenu
+    - frame: tkFrame
+    - time: tkLabel
+    - date: tkLabel
+    + get_time_var() -> tkStringVar
+    + get_date_var() -> tkStringVar
+    + run()
+}
+class "WindowFactory" as wf {
+    create() -> Window
+}
+wf ..> w: <<create>>
+
+class "EventFactory" as ef {
+    create(Window)
+}
+ef .r.> w
+abstract class "EventConnector" as ec {
+    - master: tkMenu
+    - executer: EventExecuter
+}
+abstract class "EventExecuter" as ee {
+    - target: tkWidget
+}
+ec o-r- ee
+ef ..> ec: <<create>>
+ef ..> ee: <<create>>
+
+class "TitleVisibilitySwitcher" as tvs {
+    - target: tkRoot
+    + is_hidden() -> bool
+    + hide()
+    + show()
+}
+ee <|.. tvs
+
+class "TitleVisibilitySwitchEvent" as tvse {
+    - master: tkMenu
+    - swicher: TitleVisibilitySwitcher
+    - select_msg() -> str
+    + event()
+}
+ec <|.. tvse
+
+class "TopmostSwitcher" as tms {
+    - target: tkRoot
+    + is_topmost() -> bool
+    + keep()
+    + release()
+}
+ee <|.. tms
+
+class "TopmostSwitchEvent" as tmse {
+    - master: tkMenu
+    - swicher: TopmostSwitcher
+    - select_msg() -> str
+    + event()
+}
+ec <|.. tmse
+
+abstract class "WatchObserver" as wo {
+    - target: tkStringVar
+    + update(datetime)
+}
+ee <|---- wo
+
+class "TimeObserver" as to {
+    + update(datetime)
+}
+class "DateObserver" as do {
+    + update(datetime)
+}
+wo <|.. to
+wo <|.. do
+
+abstract class "WatchCounter" as wc {
+    - observers: list[tkVariable]
+    + add_observer(tkVariable)
+    # notify_observer(datetime)
+    # abstract count()
+}
+class "TimeCounter" as tc {
+    - observed_time: datetime
+    - count()
+}
+wc <|.. tc
+wo "2..n" -l-o wc
+@enduml

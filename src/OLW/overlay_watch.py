@@ -15,6 +15,22 @@ def execute():
 root = tk.Tk()
 root.title('tkinter application')
 root.geometry('300x100')
+root.overrideredirect(False)
+
+menu = tk.Menu(root, tearoff=0)
+
+
+def fuga():
+    global now_time
+    global now_date
+    now = dt.now()
+    now_time.set(now.strftime('%H:%M:%S'))
+    now_date.set(now.strftime('%Y/%m/%d %a'))
+    menu.entryconfigure(0, label='fuga')
+
+
+menu.add_command(label="hoge", command=fuga)
+root.bind('<Button-3>', lambda e: menu.post(e.x_root, e.y_root))
 
 font_time = tkfont.Font(family="M+ 1mn", size=34, weight='bold')
 font_date = tkfont.Font(family="M+ 1mn", size=12)
