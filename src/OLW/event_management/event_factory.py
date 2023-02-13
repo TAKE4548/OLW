@@ -1,6 +1,6 @@
 from ..window import Window
-from .event_connector import TitleVisibilitySwitchEvent
-from .event_executer import (DateObserver, TimeCounter, TimeObserver, TitleVisibilitySwitcher)
+from .event_connector import TitleVisibilitySwitchEvent, TopmostSwitchEvent
+from .event_executer import (DateObserver, TimeCounter, TimeObserver, TitleVisibilitySwitcher, TopmostSwitcher)
 
 
 class EventFactory:
@@ -19,3 +19,5 @@ class EventFactory:
         executer = TitleVisibilitySwitcher(window.root)
         executer.hide()
         TitleVisibilitySwitchEvent(window.menu, executer)
+        executer = TopmostSwitcher(window.root)
+        TopmostSwitchEvent(window.menu, executer)
