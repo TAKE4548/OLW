@@ -13,6 +13,8 @@ class TopmostSwitcher(EventExecuter):
     def __init__(self, target: tk.Tk):
         super().__init__(target)
         self._target: tk.Tk
+        # NOTE: attribute直読だと反映が遅れるっぽいので別管理フラグを用意する
+        self.__status = False
 
     def is_topmost(self) -> bool:
         """現在の設定状態を返す
@@ -20,14 +22,21 @@ class TopmostSwitcher(EventExecuter):
         Returns:
             bool: True: 最前面固定中, False: 最前面固定解除
         """
-        # ret = bool(self._target.attributes("-topmost"))
-        # print(ret)
-        return bool(self._target.attributes("-topmost"))
+        return self.__status
 
     def keep(self):
         """最前面固定にする"""
-        self._target.attributes("-topmost", True)
+        self.__switch(True)
 
     def release(self):
         """最前面固定を解除する"""
-        self._target.attributes("-topmost", False)
+        self.__switch(False)
+
+    def __switch(self, mode: bool):
+        """最前面固定を切り替える
+
+        Args:
+            mode (bool): True: 固定する, False: 解除する
+        """
+        self.__status = mode
+        self._target.attributes("-topmost", mode)

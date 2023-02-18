@@ -23,7 +23,7 @@ class TopmostSwitchEvent(EventConnector):
             return '最前面に固定する'
 
     def event(self):
-        if hoge := self._executer.is_topmost():
+        if self._executer.is_topmost():
             self._executer.release()
         else:
             self._executer.keep()
