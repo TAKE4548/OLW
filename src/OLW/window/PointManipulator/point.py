@@ -15,6 +15,18 @@ class Point:
     x: int
     y: int
 
+    def offset(self, *, x: int | None = None, y: int | None = None):
+        """座標位置を指定した分ずらす
+
+        Args:
+            x (int | None, optional): x座標のオフセット量. Defaults to None.
+            y (int | None, optional): y座標のオフセット量. Defaults to None.
+        """
+        if x is not None:
+            self.x += x
+        if y is not None:
+            self.y += y
+
     def for_geometry(self) -> str:
         """tkのgeometry設定向けの文字列にして返す
 

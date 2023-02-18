@@ -23,15 +23,12 @@ class PointManipulatorForLinux(PointManipulator):
         Returns:
             int: タイトルバーの高さ
         """
-        cmd = "gsettings get org.gnome.desktop.wm.preferences button-layout"
-        wm_name = subprocess.check_output(cmd, shell=True, universal_newlines=True).strip()
+        cmd = ['gsettings', 'get', 'org.gnome.desktop.wm.preferences', 'gtk-titlebar-height']
+        try:
+            titlebar_height = int(subprocess.check_output(cmd, stderr=subprocess.STDOUT).decode('utf-8').strip())
+        except subprocess.CalledProcessError:
+            cmd = ['gsettings', 'get', 'org.gnome.desktop.interface', 'font-name']
+            font_size = subprocess.check_output(cmd).decode('utf-8').strip().strip("/'").split(' ')[-1]
+            titlebar_height = int(font_size.split('@')[0]) + 18
 
-        # ウィンドウマネージャーごとにタイトルバーサイズを返す
-        if wm_name == "appmenu:minimize,maximize,close":
-            return 26  # Unity
-        elif wm_name == "close:":
-            return 30  # GNOME
-        elif wm_name == "appmenu:minimize,maximize,close;":
-            return 72  # Compiz (デフォルト)
-        else:
-            return 0  # タイトルバーなし
+        return titlebar_height
