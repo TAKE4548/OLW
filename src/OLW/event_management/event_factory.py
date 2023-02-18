@@ -1,6 +1,6 @@
 from ..window import Window
-from .event_connector import TitleVisibilitySwitchEvent, TopmostSwitchEvent
-from .event_executer import (DateObserver, TimeCounter, TimeObserver, TitleVisibilitySwitcher, TopmostSwitcher)
+from .event_connector import TopmostSwitchEvent
+from .event_executer import (DateObserver, TimeCounter, TimeObserver, TopmostSwitcher)
 
 
 class EventFactory:
@@ -16,8 +16,5 @@ class EventFactory:
         observer = DateObserver(window.datevar)
         counter.add_observer(observer)
         # コンテキストメニューのイベント設定
-        executer = TitleVisibilitySwitcher(window.root)
-        executer.hide()
-        TitleVisibilitySwitchEvent(window.menu, executer)
         executer = TopmostSwitcher(window.root)
         TopmostSwitchEvent(window.menu, executer)

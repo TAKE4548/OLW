@@ -15,6 +15,8 @@ class WindowFactory:
         root.title('Resident watch')
         root.geometry('300x100')
         root.minsize(300, 80)
+        root.overrideredirect(True)
+        root.update()
         menu = tk.Menu(root, tearoff=0)
         root.bind(MouseEvents.RightClick, lambda e: menu.post(e.x_root, e.y_root))
         frame = ttk.Frame(root)
