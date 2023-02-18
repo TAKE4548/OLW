@@ -6,9 +6,6 @@ skinparam {
 left to right direction
 
 together {
-    class "WindowFactory" as wf {
-        create() -> Window
-    }
     class "Window" as w {
         - root: tkRoot
         - menu: tkMenu
@@ -17,14 +14,11 @@ together {
         - timevar: tkStringVar
         - date: tkLabel
         - datevar: tkStringVar
-        - quit_funcs: list[Function]
+        + {static} create() -> Window
         + get_time_var() -> tkStringVar
         + get_date_var() -> tkStringVar
         + run()
-        + close_window()
-        + register_quit_func(Function)
     }
-    w <. wf: <<create>>
 }
 
 together {
