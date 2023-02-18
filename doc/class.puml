@@ -40,6 +40,7 @@ ef ..> ee: <<create>>
 
 class "TitleVisibilitySwitcher" as tvs {
     - target: tkRoot
+    - point_manipulator: PointManipulator
     + is_hidden() -> bool
     + hide()
     + show()
@@ -53,6 +54,23 @@ class "TitleVisibilitySwitchEvent" as tvse {
     + event()
 }
 ec <|.. tvse
+
+abstract class "PointManipulator" as pm {
+    - target: tkRoot
+    - get_geometry() -> Size, Point
+    + get_point() -> Point
+    + set_point(int, int)
+    + {abstract} get_title_size() -> Size
+}
+class "PointManipulatorForLinux" as pml {
+    + get_title_size() -> Size
+}
+class "PointManipulatorForWindows" as pmw {
+    + get_title_size() -> Size
+}
+pm <|.. pml
+pm <|.. pmw
+tvs --> pm: <<Create>> <<Use>>
 
 class "TopmostSwitcher" as tms {
     - target: tkRoot
