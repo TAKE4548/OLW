@@ -15,6 +15,7 @@ class WatchObserver(EventExecuter, ABC):
     def __init__(self, target: tk.StringVar):
         super().__init__(target)
         self._target: tk.StringVar
+        self._last_time = dt.min
 
     @abstractmethod
     def update(self, datetime: dt):
@@ -23,4 +24,4 @@ class WatchObserver(EventExecuter, ABC):
         Args:
             datetime (dt): 更新する時刻情報
         """
-        ...
+        self._last_time = datetime

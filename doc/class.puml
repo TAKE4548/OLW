@@ -3,99 +3,140 @@ skinparam {
    defaultfontsize 16
    linetype ortho
 }
-class "Window" as w {
-    - root: tkRoot
-    - menu: tkMenu
-    - frame: tkFrame
-    - time: tkLabel
-    - timevar: tkStringVar
-    - date: tkLabel
-    - datevar: tkStringVar
-    - quit_funcs: list[Function]
-    + get_time_var() -> tkStringVar
-    + get_date_var() -> tkStringVar
-    + run()
-    + close_window()
-    + register_quit_func(Function)
-}
-class "WindowFactory" as wf {
-    create() -> Window
-}
-wf ..> w: <<create>>
+left to right direction
 
-class "EventFactory" as ef {
-    create(Window)
+together {
+    class "Window" as w {
+        - root: tkRoot
+        - menu: tkMenu
+        - frame: tkFrame
+        - time: tkLabel
+        - timevar: tkStringVar
+        - date: tkLabel
+        - datevar: tkStringVar
+        + {static} create() -> Window
+        + get_time_var() -> tkStringVar
+        + get_date_var() -> tkStringVar
+        + run()
+    }
 }
-ef .r.> w
-abstract class "EventConnector" as ec {
-    - master: tkMenu
-    - executer: EventExecuter
-}
-abstract class "EventExecuter" as ee {
-    - target: tkWidget
-}
-ec o-r- ee
-ef ..> ec: <<create>>
-ef ..> ee: <<create>>
 
-class "TitleVisibilitySwitcher" as tvs {
-    - target: tkRoot
-    + is_hidden() -> bool
-    + hide()
-    + show()
-}
-ee <|.. tvs
+together {
+    class "EventFactory" as ef {
+        create(Window)
+    }
+    w <.. ef
 
-class "TitleVisibilitySwitchEvent" as tvse {
-    - master: tkMenu
-    - swicher: TitleVisibilitySwitcher
-    - select_msg() -> str
-    + event()
-}
-ec <|.. tvse
+    abstract class "EventExecuter" as ee {
+        # target: tkWidget
+    }
 
-class "TopmostSwitcher" as tms {
-    - target: tkRoot
-    + is_topmost() -> bool
-    + keep()
-    + release()
+    abstract class "EventConnector" as ec {
+        # master: tkMenu
+        # executer: EventExecuter
+        + {abstract}{static} bind(Window, EventExecuter)
+        # register_menu()
+        # {abstract} select_msg() -> str
+        + {abstract} event()
+    }
+    ef ....> ec: <<create>>
+    ec o- ee
 }
-ee <|.. tms
 
-class "TopmostSwitchEvent" as tmse {
-    - master: tkMenu
-    - swicher: TopmostSwitcher
-    - select_msg() -> str
-    + event()
-}
-ec <|.. tmse
 
-abstract class "WatchObserver" as wo {
-    - target: tkStringVar
-    - last_time: datetime
-    + update(datetime)
-}
-ee <|---- wo
+together {
+    class "WindowCloser" as wcr {
+        # target: tkRoot
+        - quit_funcs: list[Callable]
+        + register_quit_func(Callable)
+        + on_closing()
+    }
+    ee <|.. wcr
 
-class "TimeObserver" as to {
-    + update(datetime)
+    class "WindowCloseEvent" as wcre {
+        # executer: WindowCloser
+        + {static} bind(Window)
+        # select_msg() -> str
+        + event()
+    }
+    ec <|.. wcre
 }
-class "DateObserver" as do {
-    + update(datetime)
-}
-wo <|.. to
-wo <|.. do
 
-abstract class "WatchCounter" as wc {
-    - observers: list[WatchObsever]
-    + add_observer(WatchObserver)
-    # notify_observer(datetime)
-    # {abstract} count()
-    + quit()
+together {
+    class "WindowMover" as wm {
+        # target: tkRoot
+        - manipulator: PointManipulator
+        - start_point: Point
+        - last_update: datetime
+        + {static} bind(Window)
+        - elapsed_time() -> bool
+        + on_drag_start(tkEvent)
+        + on_drag(tkEvent)
+    }
+    ee <|.. wm
+
+    class "PointManipulator" as pm {
+        - target: tkRoot
+        - get_geometry() -> Size, Point
+        + get_point() -> Point
+        + set_point(int, int)
+        + set_point_as_Point(Point)
+    }
+    wm o-- pm
 }
-class "TimeCounter" as tc {
-    - count()
+
+together {
+    class "TopmostSwitcher" as tms {
+        # target: tkRoot
+        - status:bool
+        - switch(bool)
+        + is_topmost() -> bool
+        + keep()
+        + release()
+    }
+    ee <|.. tms
+
+    class "TopmostSwitchEvent" as tmse {
+        # executer: TopmostSwitcher
+        + {static} bind(Window)
+        # select_msg() -> str
+        + event()
+    }
+    ec <|.. tmse
 }
-wc <|.. tc
-wo "2..n" -l-o wc
+
+together {
+    abstract class "WatchObserver" as wo {
+        # target: tkStringVar
+        # last_time: datetime
+        + {abstract} update(datetime)
+    }
+    ee <|-- wo
+
+    class "TimeObserver" as to {
+        + update(datetime)
+    }
+    wo <|.. to
+
+    class "DateObserver" as do {
+        + update(datetime)
+    }
+    wo <|.. do
+
+    abstract class "WatchCounter" as wc {
+        - observers: list[WatchObsever]
+        - thread: Thread
+        # quit_loop: bool
+        # notify_observer(datetime)
+        # {abstract} count()
+        + add_observer(WatchObserver)
+        + quit()
+    }
+
+    class "TimeCounter" as tc {
+        # count()
+    }
+    wc <|.. tc
+    wo "2..n" -l-o wc
+}
 @enduml
