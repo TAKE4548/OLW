@@ -53,6 +53,14 @@ class PointManipulator:
             new_point.y = y
         self._target.geometry(new_point.for_geometry())
 
+    def set_point_as_Point(self, point: Point):
+        """指定の表示位置に設定する
+
+        Args:
+            point (Point): 指定する座標位置
+        """
+        self.set_point(point.x, point.y)
+
     def get_size(self) -> Size:
         """現在のウィンドウサイズを取得する
 

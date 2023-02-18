@@ -43,12 +43,6 @@ together {
     ec o- ee
 }
 
-abstract class "PointManipulator" as pm {
-    - target: tkRoot
-    - get_geometry() -> Size, Point
-    + get_point() -> Point
-    + set_point(int, int)
-}
 
 together {
     class "WindowCloser" as wcr {
@@ -66,6 +60,29 @@ together {
         + event()
     }
     ec <|.. wcre
+}
+
+together {
+    class "WindowMover" as wm {
+        # target: tkRoot
+        - manipulator: PointManipulator
+        - start_point: Point
+        - last_update: datetime
+        + {static} bind(Window)
+        - elapsed_time() -> bool
+        + on_drag_start(tkEvent)
+        + on_drag(tkEvent)
+    }
+    ee <|.. wm
+
+    class "PointManipulator" as pm {
+        - target: tkRoot
+        - get_geometry() -> Size, Point
+        + get_point() -> Point
+        + set_point(int, int)
+        + set_point_as_Point(Point)
+    }
+    wm o-- pm
 }
 
 together {

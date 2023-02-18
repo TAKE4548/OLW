@@ -1,6 +1,6 @@
 from ..window import Window
 from .event_connector import TopmostSwitchEvent, WindowCloseEvent
-from .event_executer import DateObserver, TimeCounter, TimeObserver
+from .event_executer import (DateObserver, TimeCounter, TimeObserver, WindowMover)
 
 
 class EventFactory:
@@ -14,6 +14,8 @@ class EventFactory:
         counter.add_observer(observer)
         observer = DateObserver(window.datevar)
         counter.add_observer(observer)
+        WindowMover.bind(window)
+
         # コンテキストメニューのイベント設定
         TopmostSwitchEvent.bind(window)
         WindowCloseEvent.bind(window, counter.quit)
