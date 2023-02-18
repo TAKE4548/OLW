@@ -1,11 +1,10 @@
 import tkinter as tk
-from abc import ABC, abstractmethod
 
 from .point import Point
 from .size import Size
 
 
-class PointManipulator(ABC):
+class PointManipulator:
     """ウィンドウ表示位置の取得と設定機能を提供するクラス
 
     Args:
@@ -62,12 +61,3 @@ class PointManipulator(ABC):
         """
         size, _ = self.__get_geometry()
         return size
-
-    @abstractmethod
-    def get_title_size(self) -> Size:
-        """タイトルバーのサイズを取得する
-
-        Returns:
-            Size: タイトルバーのサイズ
-        """
-        ...
