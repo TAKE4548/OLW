@@ -1,6 +1,8 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
+from typing import Generic, Type, TypeVar
 
+from ...window import Window
 from ..event_executer import EventExecuter
 
 
@@ -11,6 +13,11 @@ class EventConnector(ABC):
         menu (tk.Menu): コンテキストメニューのオブジェクト
         event (EventExecuter): 紐付けるイベントの処理を持つオブジェクト
     """
+
+    @classmethod
+    @abstractmethod
+    def bind(cls, window: Window, executer_class: Type[EventExecuter]):
+        cls(window.menu, executer_class(window.root))
 
     def __init__(self, menu: tk.Menu, event: EventExecuter):
         self._master = menu

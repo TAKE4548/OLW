@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from ...window import Window
 from ..event_executer import TopmostSwitcher
 from .event_connector import EventConnector
 
@@ -11,6 +12,15 @@ class TopmostSwitchEvent(EventConnector):
         menu (tk.Menu): コンテキストメニューのオブジェクト
         event (TopmostSwitcher): 最前面表示固定切り替えオブジェクト
     """
+
+    @classmethod
+    def bind(cls, window: Window):
+        """指定のWindowのコンテキストメニューに最前面固定切り替えイベントを設定する
+
+        Args:
+            window (Window): 設定対象のウィンドウオブジェクト
+        """
+        super().bind(window, TopmostSwitcher)
 
     def __init__(self, menu: tk.Menu, event: TopmostSwitcher):
         super().__init__(menu, event)
