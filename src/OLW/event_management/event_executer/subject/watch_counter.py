@@ -9,7 +9,7 @@ class WatchCounter(ABC):
     """時刻カウンタの基底クラス"""
 
     def __init__(self):
-        self._observers: list[WatchObserver] = []
+        self.__observers: list[WatchObserver] = []
         self._quit_loop = False
         self.__thread = Thread(target=self._count, name='continue_count')
         self.__thread.start()
@@ -20,7 +20,7 @@ class WatchCounter(ABC):
         Args:
             observer (WatchObserver): 追加するオブザーバー
         """
-        self._observers.append(observer)
+        self.__observers.append(observer)
 
     def _notify_observer(self, datetime: dt):
         """全オブザーバーに通知を送る
@@ -28,7 +28,7 @@ class WatchCounter(ABC):
         Args:
             datetime (dt): 通知する時刻情報
         """
-        for observer in self._observers:
+        for observer in self.__observers:
             observer.update(datetime)
 
     @abstractmethod

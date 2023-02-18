@@ -34,15 +34,18 @@ together {
     w <.. ef
 
     abstract class "EventExecuter" as ee {
-        - target: tkWidget
+        # target: tkWidget
     }
-    ef ..> ee: <<create>>
 
     abstract class "EventConnector" as ec {
-        - master: tkMenu
-        - executer: EventExecuter
+        # master: tkMenu
+        # executer: EventExecuter
+        + {abstract}{static} bind(Window, EventExecuter)
+        # register_menu()
+        # {abstract} select_msg() -> str
+        + {abstract} event()
     }
-    ef ..> ec: <<create>>
+    ef ....> ec: <<create>>
     ec o- ee
 }
 
@@ -55,14 +58,17 @@ abstract class "PointManipulator" as pm {
 
 together {
     class "WindowCloser" as wcr {
-        - target: tkRoot
-        + close()
+        # target: tkRoot
+        - quit_funcs: list[Callable]
+        + register_quit_func(Callable)
+        + on_closing()
     }
     ee <|.. wcr
 
     class "WindowCloseEvent" as wcre {
-        - master: tkMenu
-        - closer: WindowCloser
+        # executer: WindowCloser
+        + {static} bind(Window)
+        # select_msg() -> str
         + event()
     }
     ec <|.. wcre
@@ -70,7 +76,9 @@ together {
 
 together {
     class "TopmostSwitcher" as tms {
-        - target: tkRoot
+        # target: tkRoot
+        - status:bool
+        - switch(bool)
         + is_topmost() -> bool
         + keep()
         + release()
@@ -78,9 +86,9 @@ together {
     ee <|.. tms
 
     class "TopmostSwitchEvent" as tmse {
-        - master: tkMenu
-        - swicher: TopmostSwitcher
-        - select_msg() -> str
+        # executer: TopmostSwitcher
+        + {static} bind(Window)
+        # select_msg() -> str
         + event()
     }
     ec <|.. tmse
@@ -88,9 +96,9 @@ together {
 
 together {
     abstract class "WatchObserver" as wo {
-        - target: tkStringVar
-        - last_time: datetime
-        + update(datetime)
+        # target: tkStringVar
+        # last_time: datetime
+        + {abstract} update(datetime)
     }
     ee <|-- wo
 
@@ -106,14 +114,16 @@ together {
 
     abstract class "WatchCounter" as wc {
         - observers: list[WatchObsever]
-        + add_observer(WatchObserver)
+        - thread: Thread
+        # quit_loop: bool
         # notify_observer(datetime)
         # {abstract} count()
+        + add_observer(WatchObserver)
         + quit()
     }
 
     class "TimeCounter" as tc {
-        - count()
+        # count()
     }
     wc <|.. tc
     wo "2..n" -l-o wc
