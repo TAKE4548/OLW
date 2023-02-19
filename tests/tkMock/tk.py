@@ -71,11 +71,11 @@ class TkMock(tk.Tk):
     """tk.Tkのテスト用モック"""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.__is_destroyed = False
         self.__protocols: dict[str, Callable[[], object] | str] = {}
         self.__attributes: dict[str, Any] = {}
         self.__geometry = _Geometry(100, 100, 0, 0)
+        super().__init__(*args, **kwargs)
 
     @property
     def is_destroyed(self) -> bool:
