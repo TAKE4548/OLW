@@ -15,4 +15,4 @@ exclude_lines =
     pragma: no cover
 
 [html]
-directory = coverage_report
+directory = docs
