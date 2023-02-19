@@ -1,0 +1,15 @@
+[run]
+source =
+  src
+omit =
+  */tests/*
+  */__init__.py
+  */events.py
+  src/overlay_watch.py
+branch = true
+
+[report]
+fail_under = 70
+precision = 2
+exclude_lines =
+    pragma: no cover

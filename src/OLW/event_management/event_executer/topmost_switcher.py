@@ -14,7 +14,7 @@ class TopmostSwitcher(EventExecuter):
         super().__init__(target)
         self._target: tk.Tk
         # NOTE: attribute直読だと反映が遅れるっぽいので別管理フラグを用意する
-        self.__status = False
+        self.__status = bool(target.attributes('-topmost'))
 
     def is_topmost(self) -> bool:
         """現在の設定状態を返す
