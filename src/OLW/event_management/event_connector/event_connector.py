@@ -1,6 +1,6 @@
 import tkinter as tk
 from abc import ABC, abstractmethod
-from typing import Generic, Type, TypeVar
+from typing import Type
 
 from ...window import Window
 from ..event_executer import EventExecuter
