@@ -105,13 +105,18 @@ class TkMock(tk.Tk):
         """
         return self.__protocols.get(name, None)
 
-    def attributes(self, option: str, value: Any):
+    def attributes(self, option: str, value: Any | None = None) -> Any | None:
         """本家Tkのattributesの代わりに、自身のアトリビュート設定履歴に登録する
 
         Args:
             option (str): 設定するアトリビュートの名前
-            value (Any): 設定するアトリビュートの値
+            value (Any | None): 設定するアトリビュートの値.None渡すと現在値が返る
+
+        Return:
+            Any | None: optionで指定したアトリビュートの現在値.valueに設定値を渡した場合はNone
         """
+        if value is None:
+            return self.__attributes.get(option)
         self.__attributes[option] = value
 
     def find_attribute(self, option: str) -> Any:
