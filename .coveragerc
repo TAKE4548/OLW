@@ -13,3 +13,6 @@ fail_under = 70
 precision = 2
 exclude_lines =
     pragma: no cover
+
+[html]
+directory = coverage_report
