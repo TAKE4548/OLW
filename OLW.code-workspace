@@ -7,8 +7,8 @@
     "settings": {
         "python.linting.flake8Enabled": true,
         "python.linting.flake8Args": [
-            "--max-line-length=120",
-            "--ignore=W503"
+            "--config",
+            "./.flake8"
         ],
         "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
         "python.formatting.provider": "yapf",
@@ -38,6 +38,10 @@
         ],
         "python.analysis.diagnosticMode": "workspace",
         "python.analysis.typeCheckingMode": "basic",
-        "files.autoSave": "onFocusChange"
+        "files.autoSave": "onFocusChange",
+        "python.analysis.extraPaths": [
+            "src",
+            "tests"
+        ]
     }
 }
