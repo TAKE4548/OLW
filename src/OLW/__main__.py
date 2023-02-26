@@ -6,9 +6,14 @@ from tkinter import ttk
 from .event_management import EventFactory
 from .window import Window
 
-window = Window.create()
-EventFactory.create(window)
-window.run()
+
+def main():
+    window = Window.create()
+    EventFactory.create(window)
+    window.run()
+
+
+main()
 exit()
 
 topmost: bool = False
