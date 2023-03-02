@@ -67,7 +67,7 @@ class _Geometry:
         return self.__class__(*map(int, (w, h, x, y)))
 
 
-class TkMock(tk.Tk):
+class TkMock:
     """tk.Tkのテスト用モック"""
 
     def __init__(self, *args, **kwargs):
@@ -75,7 +75,7 @@ class TkMock(tk.Tk):
         self.__protocols: dict[str, Callable[[], object] | str] = {}
         self.__attributes: dict[str, Any] = {}
         self.__geometry = _Geometry(100, 100, 0, 0)
-        super().__init__(*args, **kwargs)
+        # super().__init__(*args, **kwargs)
 
     @property
     def is_destroyed(self) -> bool:
