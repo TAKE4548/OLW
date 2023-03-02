@@ -1,11 +1,16 @@
 [tool.poetry]
 name = "OLW"
-version = "0.1.0"
+version = "0.0.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "OLW", from = "src"}]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -21,5 +26,5 @@ pytest = "^7.2.1"
 pytest-cov = "^4.0.0"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
